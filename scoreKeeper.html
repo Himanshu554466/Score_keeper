@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Score Keeper</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root" style="text-align: center"></div>
+    <script type="text/babel">
+      let score = 0;
+      let wicket = 0;
+      let ballWise =[]; 
+      let hit = 0;
+      let inputRef = React.createRef();
+
+      function clickon(num) {
+        hit = num;
+          rootElement.render(<App />);
+         
+          console.log(hit);
+
+        }
+      
+
+      function addOne() { 
+        if (wicket < 10) {
+          rootElement.render(<App />);
+          score += 1;
+        }
+      }
+      function addTwo() {
+        if (wicket < 10) {
+          rootElement.render(<App />);
+          score += 2;
+        }
+      }
+
+      function Wicket() {
+      hit = "W";
+          
+          console.log(hit)
+          
+        }
+
+        function handleSubmit(){
+          event.preventDefault();
+          if(hit == "W"){
+            wicket+=1;
+          } else{
+            score+=hit;
+          }
+
+          console.log(inputRef.current.value);
+          ballWise.unshift(
+            <span>{hit}{":"}{inputRef.current.value}</span>
+          );
+          hit =0;
+          inputRef.current.value=""
+          rootElement.render(<App />);
+        }
+
+      
+      
+      const Ballresult = () =>(
+        <div>
+          {ballWise.map((res,index) =>(
+            <>
+            {index %6 === 0?<br/>:null}
+            <span key = {index}>{res ===0?<strong>.</strong>:res}</span>
+            &nbsp;&nbsp;&nbsp;
+            
+            </>
+            ))}
+          </div>
+      )
+
+      const ScoreButton = () => (
+        <div>
+          <button onClick = {()=>clickon(0)}>0</button>
+          <button onClick = {()=>clickon(1)}>1</button>
+          <button onClick = {()=>clickon(2)}>2</button>
+          <button onClick = {()=>clickon(3)}>3</button>
+          <button onClick = {()=>clickon(4)}>4</button>
+          <button onClick = {()=>clickon(5)}>5</button>
+          <button onClick = {()=>clickon(6)}>6</button>
+          <button onClick = {Wicket}>wicket</button>
+          </div>
+
+      )
+
+      const Form = () => (
+        <form onSubmit={handleSubmit}>
+          <input value = {hit}/>
+          &nbsp;&nbsp;
+          <input ref = {inputRef} placeholder ="Add a comment"/>
+          &nbsp;&nbsp;
+          <button>submit</button>
+          </form>
+      )
+
+      const App = () => (
+        <>
+          <h1>CRICKET SCORE KEEPER</h1>
+          <h2>
+            SCORE:{score}/{wicket}
+          </h2>
+        <ScoreButton />
+ 
+        <br/>
+        <hr/>
+        <Form />
+          <div>
+            {ballWise.map((res,index)=>(
+              <p key = {index}>{res}</p>
+            ))}
+            </div>
+        </>
+      );
+
+      const rootElement = ReactDOM.createRoot(document.getElementById("root"));
+      rootElement.render(<App />);
+    </script>
+  </body>
+</html>
